@@ -2,7 +2,7 @@
 
 // Establece la variable de entorno GOOGLE_APPLICATION_CREDENTIALS,
 // necesaria para la autenticación con Google Cloud Storage
-process.env['GOOGLE_APPLICATION_CREDENTIALS'] = '../../marina-y-elias-d1afe1b05609.json';
+// process.env['GOOGLE_APPLICATION_CREDENTIALS'] = '../../marina-y-elias-d1afe1b05609.json';
 
 const { Storage } = require('@google-cloud/storage')
 const fs = require('fs')
