@@ -13,16 +13,35 @@
 }
 
 .image {
-	filter: invert(1) contrast(1) brightness(0.4) blur(2px); /* hide Marina */
+	filter: invert(1) contrast(1) brightness(0.4) blur(2px);/*  hide Marina */
 	max-width: 170px;
 	max-height: 110px;
 	border: var(--fg-color-2) 2px solid;
 	border-radius: 15px;
+
+	&.fotocall_gifs, 
+	&.fotocall {
+		max-width: 150px;
+		max-height: none;
+	}
+	&.fotocall_printed {
+		max-width: 330px;
+		max-height: none;
+	}
 }
 
-@media screen and (min-width: 490px) {
+@media screen and (min-width: 512px) {
 	.image {
 		max-width: 224px;
 		max-height: 150px;
+		&.fotocall_gifs, 
+		&.fotocall {
+			max-width: 224px;
+			max-height: none;
+		}
+		&.fotocall_printed {
+			max-width: 512px;
+		}
 	}
 }
+

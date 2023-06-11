@@ -2,17 +2,23 @@
 import Layout from '../../layouts/Layout.astro'
 import bucketFilesJson from '../../../bucketJsonGenerator/estructura_ficheros_bucket.json'
 import Galeria from '../../components/Galeria'
+import { imageTypes } from '../../types'
 
 export function getStaticPaths () {
 	return [
-		{ params: { tipo: 'fotos' } }
+		{ params: { tipo: imageTypes.fotos } },
+		{ params: { tipo: imageTypes.fotocall } },
+		{ params: { tipo: imageTypes.fotocall_printed } },
+		{ params: { tipo: imageTypes.fotocall_gifs } }
 	]
 }
 const { tipo } = Astro.params
 
 function getTitle () {
-	// if (tipo === 'boda/fotos') return 'Fotos de momentos'
-	if (tipo === 'boda/fotos') return 'Motos de fomentos'
+	if (tipo === imageTypes.fotos) return 'Titulo Momentos'
+	if (tipo === imageTypes.fotocall) return 'Titulo Disfraz'
+	if (tipo === imageTypes.fotocall_printed) return 'Titulo Tarjetas'
+	if (tipo === imageTypes.fotocall_gifs) return 'Titulo Gifs'
 }
 
 const bucketData = bucketFilesJson.boda[tipo]
@@ -22,6 +28,10 @@ const bucketData = bucketFilesJson.boda[tipo]
 <Layout title='Marina y Elías'>
 	<main>
 		<h1>{getTitle()}</h1>
-		<Galeria bucketData={bucketData} baseUrl={bucketFilesJson.urlBase} />
+		<Galeria
+			bucketData={bucketData}
+			baseUrl={bucketFilesJson.urlBase}
+			tipo={tipo}
+		/>
 	</main>
 </Layout>

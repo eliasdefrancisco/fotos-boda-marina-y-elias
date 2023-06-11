@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import { imageTypes } from '../types/index'
 ---
 
 <Layout title='Marina y Elías'>
@@ -11,7 +12,10 @@ import Layout from '../layouts/Layout.astro'
 		<p>
 			bla bla bla bli blo blu blu
 		</p>
-		<h3><a href={'galerias/fotos'}>Las fotos de los momentos →</a></h3>
+		<h3><a href={'galerias/' + imageTypes.fotos}>Los momentos →</a></h3>
+		<h3><a href={'galerias/' + imageTypes.fotocall}>Gente disfrazada →</a></h3>
+		<h3><a href={'galerias/' + imageTypes.fotocall_printed}>Gente disfrazada de 3 en 3 →</a></h3>
+		<h3><a href={'galerias/' + imageTypes.fotocall_gifs}>Gifs de gente disfrazada →</a></h3>
 	</main>
 </Layout>
 
