@@ -30,12 +30,12 @@ async function listarArchivosEnBucket (nombreBucket) {
 
 			// Si es la última parte, es un archivo
 			if (index === partes.length - 1) {
-				if (!nivelActual.archivo) {
-					nivelActual.archivo = []
+				if (!nivelActual.archivos) {
+					nivelActual.archivos = []
 				}
 
 				// Solo guardamos la última parte de la URL en un array de strings simple
-				nivelActual.archivo.push(parte)
+				nivelActual.archivos.push(parte)
 			} else {
 				// Si no es la última parte, es un directorio
 				if (!nivelActual[parte]) {

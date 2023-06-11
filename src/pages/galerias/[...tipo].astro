@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import bucketFilesJson from '../../../bucketJsonGenerator/estructura_ficheros_bucket.json'
+import Galeria from '../../components/Galeria'
+
+export function getStaticPaths () {
+	return [
+		{ params: { tipo: 'fotos' } }
+	]
+}
+const { tipo } = Astro.params
+
+function getTitle () {
+	// if (tipo === 'boda/fotos') return 'Fotos de momentos'
+	if (tipo === 'boda/fotos') return 'Motos de fomentos'
+}
+
+const bucketData = bucketFilesJson.boda[tipo]
+
+---
+
+<Layout title='Marina y Elías'>
+	<main>
+		<h1>{getTitle()}</h1>
+		<Galeria bucketData={bucketData} baseUrl={bucketFilesJson.urlBase} />
+	</main>
+</Layout>

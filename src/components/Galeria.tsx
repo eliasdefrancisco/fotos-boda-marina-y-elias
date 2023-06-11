@@ -1,20 +1,25 @@
+import path from 'path'
+import { BucketDataJson } from 'src/types'
 import styles from './Galeria.module.css'
 
 type Props = {
-	baseUrl: string;
-	imageList: string[];
+	bucketData: BucketDataJson
+	baseUrl: string
 }
 
-export default function Galeria ({ baseUrl, imageList }: Props) {
+export default function Galeria ({ bucketData, baseUrl }: Props) {
+	const thumbnailUrlBase = path.join(baseUrl, bucketData.thumbnail.urlBaseRelativa)
+	const thumbnailFiles = bucketData.thumbnail.archivos
+
 	return (
 		<div class={styles.container}>
 			<ul class={styles.galeryContainer}>
-				{imageList.map((foto, index) => (
+				{thumbnailFiles.map((imageName, index) => (
 					<li key={index}>
 						<img
-							src={`${baseUrl}/${foto}`}
+							src={path.join(thumbnailUrlBase, imageName)}
 							class={styles.image}
-							alt={foto}
+							alt={imageName}
 						/>
 					</li>
 				))}
