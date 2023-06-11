@@ -1,0 +1,58 @@
+---
+import path from 'path'
+import Layout from '../../layouts/Layout.astro'
+import bucketFilesJson from '../../../bucketJsonGenerator/estructura_ficheros_bucket.json'
+import Galeria from '../../components/Galeria'
+
+type BucketFilesJson = {
+	baseUrl: string
+	urlBaseRelativa: string
+	archivos?: string[]
+}
+
+const thumbnailSlug = '/thumbnail/'
+
+
+export function getStaticPaths () {
+	return [
+		{ params: { urlBaseRelativa: 'boda/fotos' } }
+	]
+}
+const { urlBaseRelativa } = Astro.params
+console.log('urlBaseRelativa', urlBaseRelativa)
+
+
+function getTitle () {
+	// if (urlBaseRelativa === 'boda/fotos') return 'Fotos de momentos'
+	if (urlBaseRelativa === 'boda/fotos') return 'Motos de fomentos'
+}
+
+
+function recorrerDirectorios (obj, baseUrl = '', resultado): BucketFilesJson[] {
+	for (const key in obj) {
+		if (key === 'archivo') {
+			resultado.push({
+				baseUrl,
+				urlBaseRelativa: obj.urlBaseRelativa,
+				archivos: obj.archivo
+			})
+		} else if (key !== 'urlBase' && key !== 'urlBaseRelativa' && key !== 'archivo') {
+			const nuevaUrlBase = path.join(baseUrl, key)
+			recorrerDirectorios(obj[key], nuevaUrlBase, resultado)
+		}
+	}
+	return resultado
+}
+const jsonEntrada = bucketFilesJson
+const resultado = recorrerDirectorios(jsonEntrada, jsonEntrada.urlBase, [])
+const thumbsFilesData = resultado.find(item => item.urlBaseRelativa === urlBaseRelativa + thumbnailSlug)
+console.log(thumbsFilesData)
+
+---
+
+<Layout title='Marina y Elías'>
+	<main>
+		<h1>{getTitle()}</h1>
+		<Galeria baseUrl={thumbsFilesData.baseUrl} imageList={thumbsFilesData.archivos} />
+	</main>
+</Layout>
