@@ -39,6 +39,7 @@
 
 .imageControls {
 	display: flex;
+	flex-direction: row-reverse;
 	justify-content: space-between;
 	position: absolute;
 	bottom: 5px;

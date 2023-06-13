@@ -1,4 +1,5 @@
 import { signal } from '@preact/signals'
+import { useEffect, useState } from 'preact/hooks'
 import { BucketDataJson, imageTypes } from 'src/types'
 import styles from './Galeria.module.css'
 import FullScreenImage from './FullScreenImage'
@@ -11,8 +12,9 @@ type Props = {
 }
 
 export default function Galeria ({ bucketData, baseUrl, tipo }: Props) {
-	const lastClickOn = signal('')
 	const imageFullScreen = signal('')
+	const [showShare, setShowShare] = useState(false)
+
 
 	const thumbnailUrlBase = tipo === imageTypes.fotocall_gifs
 		? `${baseUrl}/${bucketData.urlBaseRelativa}`
@@ -22,6 +24,10 @@ export default function Galeria ({ bucketData, baseUrl, tipo }: Props) {
 		? `${baseUrl}/${bucketData.urlBaseRelativa}`
 		: `${baseUrl}/${bucketData.original.urlBaseRelativa}`
 
+	const visualizacionUrlBase = tipo === imageTypes.fotocall_gifs
+		? `${baseUrl}/${bucketData.urlBaseRelativa}`
+		: `${baseUrl}/${bucketData.visualizacion.urlBaseRelativa}`
+
 	const thumbnailFiles = tipo === imageTypes.fotocall_gifs
 		? bucketData.archivos
 		: bucketData.thumbnail.archivos
@@ -30,6 +36,8 @@ export default function Galeria ({ bucketData, baseUrl, tipo }: Props) {
 		imageFullScreen.value = imageThumbName
 	}
 
+	// Download solo funcionará en HTTPS
+	// Cors policy ha sido activada para todos los orígenes en el bucket de Cloud Storage
 	function handleDownload (imageThumbName: string) {
 		const imageOriginalName = imageThumbName
 			.replace(imageTailNames.thumbnail, '')
@@ -41,28 +49,40 @@ export default function Galeria ({ bucketData, baseUrl, tipo }: Props) {
 			.then(blob => {
 				// Crear un objeto URL para el blob
 				const urlBlob = window.URL.createObjectURL(blob)
-
 				// Crear un enlace para la descarga
 				const enlace = document.createElement('a')
 				enlace.href = urlBlob
 				enlace.download = 'boda_marina_y_elias.jpg'
-
 				// Añadir el enlace al cuerpo del documento (necesario para Firefox)
 				document.body.appendChild(enlace)
-
 				// Simular un clic en el enlace
 				enlace.click()
-
 				// Eliminar el enlace del cuerpo del documento después de descargar la imagen
 				document.body.removeChild(enlace)
 			})
 			.catch(error => console.error('Error:', error))
 	}
 
+	// Share solo funcionará en HTTPS y con dispositivos que soporten la API Share
+	// (Android, Safari, ..., pero no Chrome en escritorio)
+	function hadleShare (imageThumbName: string) {
+		const imageVisualizacionName = imageThumbName
+			.replace(imageTailNames.thumbnail, imageTailNames.visualizacion)
+		const imageVisualizacionUrl = `${visualizacionUrlBase}${imageVisualizacionName}`
+		navigator.share({
+			title: 'Boda Marina y Elías',
+			text: 'Fotos de la boda de Marina y Elías',
+			url: imageVisualizacionUrl
+		})
+	}
+
+	useEffect(() => {
+		setShowShare(!!window.navigator.share)
+	}, [])
+
 
 	return (
 		<div class={styles.container}>
-			<p>lastClickOn: {lastClickOn}</p>
 			<ul class={styles.galeryContainer}>
 				{thumbnailFiles.map((imageName, index) => (
 					<li key={index} class={styles.item}>
@@ -74,13 +94,16 @@ export default function Galeria ({ bucketData, baseUrl, tipo }: Props) {
 						/>
 						<div class={styles.imageControls}>
 							<span
-								class={styles.buttonShare}
-								onClick={() => (lastClickOn.value = 'Share')}
-							>🥎</span>
-							<span
 								class={styles.buttonDownload}
 								onClick={() => handleDownload(imageName)}
 							>⬇️</span>
+							{
+								showShare &&
+									<span
+										class={styles.buttonShare}
+										onClick={() => hadleShare(imageName)}
+									>🥎</span>
+							}
 						</div>
 					</li>
 				))}
