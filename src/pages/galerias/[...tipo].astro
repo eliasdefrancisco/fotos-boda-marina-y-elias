@@ -29,6 +29,7 @@ const bucketData = bucketFilesJson.boda[tipo]
 	<main>
 		<h1>{getTitle()}</h1>
 		<Galeria
+			client:visible
 			bucketData={bucketData}
 			baseUrl={bucketFilesJson.urlBase}
 			tipo={tipo}

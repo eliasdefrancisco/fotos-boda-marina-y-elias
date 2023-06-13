@@ -17,3 +17,14 @@ export const imageTypes = {
 	fotocall_printed: 'fotocall_printed',
 	fotocall_gifs: 'fotocall_gifs'
 }
+
+export const imageTailNames = {
+	thumbnail: '_512',
+	visualizacion: '_1024'
+}
+
+export const imageDirectoryNames = {
+	original: 'original',
+	thumbnail: 'thumbnail',
+	visualizacion: 'visualizacion'
+}
