@@ -13,7 +13,7 @@ type Props = {
 }
 
 export default function Galeria ({ bucketData, baseUrl, tipo }: Props) {
-	const imageFullScreen = signal('')
+	const [imageFullScreen, setImageFullScreen] = useState('')
 	const [showShare, setShowShare] = useState(false)
 
 
@@ -34,7 +34,11 @@ export default function Galeria ({ bucketData, baseUrl, tipo }: Props) {
 		: bucketData.thumbnail.archivos
 
 	function handleImageClick (imageThumbName: string) {
-		imageFullScreen.value = imageThumbName
+		setImageFullScreen(imageThumbName)
+	}
+
+	function handleCloseFullScreen () {
+		setImageFullScreen('')
 	}
 
 	// Download solo funcionará en HTTPS
@@ -105,7 +109,11 @@ export default function Galeria ({ bucketData, baseUrl, tipo }: Props) {
 			</ul>
 			{
 				imageFullScreen &&
-					<FullScreenImage imageFullScreen={imageFullScreen} thumbnailUrlBase={thumbnailUrlBase} />
+					<FullScreenImage
+						imageFullScreen={imageFullScreen}
+						thumbnailUrlBase={thumbnailUrlBase}
+						handleCloseFullScreen={handleCloseFullScreen}
+					/>
 			}
 		</div>
 	)

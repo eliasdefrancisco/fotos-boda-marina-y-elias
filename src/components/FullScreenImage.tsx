@@ -3,10 +3,8 @@ import styles from './FullScreenImage.module.css'
 import { imageTailNames, imageDirectoryNames } from '../types'
 import { SvgClose } from './SvgImages'
 
-export default function FullScreenImage ({ imageFullScreen, thumbnailUrlBase }) {
-	if (!imageFullScreen.value) return null
-
-	const srcThumbnail = `${thumbnailUrlBase}${imageFullScreen.value}`
+export default function FullScreenImage ({ imageFullScreen, thumbnailUrlBase, handleCloseFullScreen }) {
+	const srcThumbnail = `${thumbnailUrlBase}${imageFullScreen}`
 	const srcVisualizacon = srcThumbnail
 		.replace(imageTailNames.thumbnail, imageTailNames.visualizacion)
 		.replace(imageDirectoryNames.thumbnail, imageDirectoryNames.visualizacion)
@@ -16,8 +14,21 @@ export default function FullScreenImage ({ imageFullScreen, thumbnailUrlBase }) 
 
 	function handleClose () {
 		document.documentElement.style.overflowY = 'auto' // re-enable scroll
-		imageFullScreen.value = ''
+		handleCloseFullScreen()
 	}
+
+	// El boton de retroceso del navegador cierra el modal, pero no vuelve a la página anterior
+	useEffect(() => {
+		history.pushState(null, null, document.URL)
+		const handleBackButton = event => {
+			event.preventDefault()
+			handleClose()
+		}
+		window.addEventListener('popstate', handleBackButton)
+		return () => {
+			window.removeEventListener('popstate', handleBackButton)
+		}
+	}, [])
 
 	// Load large image when component is mounted
 	useEffect(() => {
@@ -31,7 +42,7 @@ export default function FullScreenImage ({ imageFullScreen, thumbnailUrlBase }) 
 		return () => {
 			document.documentElement.style.overflowY = 'auto' // re-enable scroll
 		}
-	}, [imageFullScreen.value])
+	}, [imageFullScreen])
 
 
 	return (
