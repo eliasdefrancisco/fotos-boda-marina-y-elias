@@ -4,6 +4,7 @@ import { BucketDataJson, imageTypes } from 'src/types'
 import styles from './Galeria.module.css'
 import FullScreenImage from './FullScreenImage'
 import { imageTailNames } from '../types'
+import { SvgShare, SvgDownload } from './SvgImages'
 
 type Props = {
 	bucketData: BucketDataJson
@@ -93,16 +94,10 @@ export default function Galeria ({ bucketData, baseUrl, tipo }: Props) {
 							onClick={() => handleImageClick(imageName)}
 						/>
 						<div class={styles.imageControls}>
-							<span
-								class={styles.buttonDownload}
-								onClick={() => handleDownload(imageName)}
-							>⬇️</span>
+							<SvgDownload onClick={() => handleDownload(imageName)} />
 							{
 								showShare &&
-									<span
-										class={styles.buttonShare}
-										onClick={() => hadleShare(imageName)}
-									>🥎</span>
+								<SvgShare onClick={() => hadleShare(imageName)} />
 							}
 						</div>
 					</li>

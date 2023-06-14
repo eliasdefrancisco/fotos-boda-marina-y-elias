@@ -23,4 +23,7 @@
 	right: 0rem;
 	margin: 1rem;
 	cursor: pointer;
+	width: 1.5rem;
+  height: 1.5rem;
+  fill: white;
 }

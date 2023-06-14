@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'preact/hooks'
 import styles from './FullScreenImage.module.css'
 import { imageTailNames, imageDirectoryNames } from '../types'
+import { SvgClose } from './SvgImages'
 
 export default function FullScreenImage ({ imageFullScreen, thumbnailUrlBase }) {
 	if (!imageFullScreen.value) return null
@@ -18,6 +19,7 @@ export default function FullScreenImage ({ imageFullScreen, thumbnailUrlBase }) 
 		imageFullScreen.value = ''
 	}
 
+	// Load large image when component is mounted
 	useEffect(() => {
 		document.documentElement.style.overflowY = 'hidden' // disable scroll
 		setImgSrc(srcThumbnail)
@@ -39,7 +41,7 @@ export default function FullScreenImage ({ imageFullScreen, thumbnailUrlBase }) 
 				class={styles.image}
 				alt={'foto de boda'}
 			/>
-			<p class={styles.closeIcon} onClick={handleClose}>❌</p>
+			<SvgClose class={styles.closeIcon} onClick={handleClose} />
 		</div>
 	)
 }
