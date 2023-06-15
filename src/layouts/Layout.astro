@@ -13,6 +13,7 @@ export interface Props {
 }
 
 const { title } = Astro.props;
+
 ---
 
 <!DOCTYPE html>
@@ -27,9 +28,13 @@ const { title } = Astro.props;
 	</head>
 	<body>
 		<div class='background' />
+		<div class='stars'></div>
 		<slot />
 	</body>
 </html>
+
+<script src='../scripts/stars.js' />
+
 <style is:global>
 	body,
 	html {

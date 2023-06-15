@@ -52,7 +52,6 @@ export default function FullScreenImage ({ imageFullScreen, thumbnailUrlBase, ha
 
 	return (
 		<div class={styles.container}>
-			<div class='background' />
 			<img
 				src={imgSrc}
 				class={styles.image}

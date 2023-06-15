@@ -1,4 +1,3 @@
-import { signal } from '@preact/signals'
 import { useEffect, useState } from 'preact/hooks'
 import { BucketDataJson, imageTypes } from 'src/types'
 import styles from './Galeria.module.css'
@@ -9,10 +8,11 @@ import { SvgShare, SvgDownload } from './SvgImages'
 type Props = {
 	bucketData: BucketDataJson
 	baseUrl: string
-	tipo: typeof imageTypes[keyof typeof imageTypes]
+	tipo: typeof imageTypes[keyof typeof imageTypes],
+	title: string
 }
 
-export default function Galeria ({ bucketData, baseUrl, tipo }: Props) {
+export default function Galeria ({ bucketData, baseUrl, tipo, title }: Props) {
 	const [imageFullScreen, setImageFullScreen] = useState('')
 	const [showShare, setShowShare] = useState(false)
 
@@ -88,25 +88,28 @@ export default function Galeria ({ bucketData, baseUrl, tipo }: Props) {
 
 	return (
 		<div class={styles.container}>
-			<ul class={styles.galeryContainer}>
-				{thumbnailFiles.map((imageName, index) => (
-					<li key={index} class={styles.item}>
-						<img
-							src={`${thumbnailUrlBase}${imageName}`}
-							class={`${styles.image} ${styles[tipo]}`}
-							alt={imageName}
-							onClick={() => handleImageClick(imageName)}
-						/>
-						<div class={styles.imageControls}>
-							<SvgDownload onClick={() => handleDownload(imageName)} />
-							{
-								showShare &&
+			<div style={{ visibility: imageFullScreen ? 'hidden' : 'visible' }}>
+				<h1>{title}</h1>
+				<ul class={styles.galeryContainer}>
+					{thumbnailFiles.map((imageName, index) => (
+						<li key={index} class={styles.item}>
+							<img
+								src={`${thumbnailUrlBase}${imageName}`}
+								class={`${styles.image} ${styles[tipo]}`}
+								alt={imageName}
+								onClick={() => handleImageClick(imageName)}
+							/>
+							<div class={styles.imageControls}>
+								<SvgDownload onClick={() => handleDownload(imageName)} />
+								{
+									showShare &&
 								<SvgShare onClick={() => hadleShare(imageName)} />
-							}
-						</div>
-					</li>
-				))}
-			</ul>
+								}
+							</div>
+						</li>
+					))}
+				</ul>
+			</div>
 			{
 				imageFullScreen &&
 					<FullScreenImage

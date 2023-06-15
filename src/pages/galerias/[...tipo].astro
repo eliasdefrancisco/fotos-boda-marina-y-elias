@@ -27,12 +27,12 @@ const bucketData = bucketFilesJson.boda[tipo]
 
 <Layout title='Marina y Elías'>
 	<main>
-		<h1>{getTitle()}</h1>
 		<Galeria
-			client:visible
+			client:only
 			bucketData={bucketData}
 			baseUrl={bucketFilesJson.urlBase}
 			tipo={tipo}
+			title={getTitle()}
 		/>
 	</main>
 </Layout>
