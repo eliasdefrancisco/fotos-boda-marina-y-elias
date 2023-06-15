@@ -20,7 +20,7 @@
 }
 
 .image {
-	filter: invert(1) contrast(1) brightness(0.4) blur(2px);/*  hide Marina */
+	/* filter: invert(1) contrast(1) brightness(0.4) blur(2px); hide Marina */
 	max-width: 170px;
 	max-height: 110px;
 	border: var(--fg-color-2) 1px solid;

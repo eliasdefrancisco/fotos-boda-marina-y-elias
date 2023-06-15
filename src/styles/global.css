@@ -3,3 +3,18 @@
 	--fg-color-1: #ff00aa;
 	--fg-color-2: #ffdd00;
 }
+
+.background {
+	z-index: -1;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: var(--bg-color-1);
+	background-image:
+			linear-gradient(to top right, rgba(38, 0, 255, 0.2) 0%, transparent 70%),
+			url('/background.png');
+	background-repeat: repeat;
+}
+

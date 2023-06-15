@@ -7,11 +7,10 @@
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	background-color: var(--bg-color-1);
 }
 
 .image {
-	filter: invert(1) contrast(1) brightness(0.4) blur(2px);/*  hide Marina */
+	/* filter: invert(1) contrast(1) brightness(0.4) blur(2px); hide Marina */
 	width: 100%;
 	height: 100%;
 	object-fit: contain;
