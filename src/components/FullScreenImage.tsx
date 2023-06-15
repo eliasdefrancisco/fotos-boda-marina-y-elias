@@ -11,10 +11,15 @@ export default function FullScreenImage ({ imageFullScreen, thumbnailUrlBase, ha
 
 	const [imgSrc, setImgSrc] = useState(srcThumbnail)
 
-
-	function handleClose () {
+	function closeFullScreen () {
 		document.documentElement.style.overflowY = 'auto' // re-enable scroll
 		handleCloseFullScreen()
+	}
+
+	function handleCloseBtn () {
+		// Si se cierra con X, simula el comportamiento del boton de retroceso del navegador
+		history.back()
+		closeFullScreen()
 	}
 
 	// El boton de retroceso del navegador cierra el modal, pero no vuelve a la página anterior
@@ -22,7 +27,7 @@ export default function FullScreenImage ({ imageFullScreen, thumbnailUrlBase, ha
 		history.pushState(null, null, document.URL)
 		const handleBackButton = event => {
 			event.preventDefault()
-			handleClose()
+			closeFullScreen()
 		}
 		window.addEventListener('popstate', handleBackButton)
 		return () => {
@@ -53,7 +58,7 @@ export default function FullScreenImage ({ imageFullScreen, thumbnailUrlBase, ha
 				class={styles.image}
 				alt={'foto de boda'}
 			/>
-			<SvgClose class={styles.closeIcon} onClick={handleClose} />
+			<SvgClose class={styles.closeIcon} onClick={handleCloseBtn} />
 		</div>
 	)
 }
