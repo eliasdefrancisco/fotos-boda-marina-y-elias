@@ -1,4 +1,4 @@
-const STAR_COUNT = 300
+const STAR_COUNT = 150
 const STAR_COLOR_1 = 'white'
 const STAR_COLOR_2 = 'yellow'
 const STAR_COLOR_3 = 'white'
