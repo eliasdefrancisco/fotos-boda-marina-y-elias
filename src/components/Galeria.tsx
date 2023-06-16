@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import { BucketDataJson, imageTypes } from 'src/types'
 import styles from './Galeria.module.css'
 import FullScreenImage from './FullScreenImage'
@@ -12,10 +12,14 @@ type Props = {
 	title: string
 }
 
+
 export default function Galeria ({ bucketData, baseUrl, tipo, title }: Props) {
+	const imagesToLoadEachTime = 20
+	const loadImagesScrollDistance = '1000px'
+	const loader = useRef(null)
+	const [imagesLoaded, setImagesLoaded] = useState(imagesToLoadEachTime)
 	const [imageFullScreen, setImageFullScreen] = useState('')
 	const [showShare, setShowShare] = useState(false)
-
 
 	const thumbnailUrlBase = tipo === imageTypes.fotocall_gifs
 		? `${baseUrl}/${bucketData.urlBaseRelativa}`
@@ -33,13 +37,18 @@ export default function Galeria ({ bucketData, baseUrl, tipo, title }: Props) {
 		? bucketData.archivos
 		: bucketData.thumbnail.archivos
 
+
+	// Abre la imagen en pantalla completa
 	function handleImageClick (imageThumbName: string) {
 		setImageFullScreen(imageThumbName)
 	}
 
+
+	// Cierra la imagen en pantalla completa
 	function handleCloseFullScreen () {
 		setImageFullScreen('')
 	}
+
 
 	// Download solo funcionará en HTTPS
 	// Cors policy ha sido activada para todos los orígenes en el bucket de Cloud Storage
@@ -68,9 +77,10 @@ export default function Galeria ({ bucketData, baseUrl, tipo, title }: Props) {
 			.catch(error => console.error('Error:', error))
 	}
 
+
 	// Share solo funcionará en HTTPS y con dispositivos que soporten la API Share
 	// (Android, Safari, ..., pero no Chrome en escritorio)
-	function hadleShare (imageThumbName: string) {
+	function handleShare (imageThumbName: string) {
 		const imageVisualizacionName = imageThumbName
 			.replace(imageTailNames.thumbnail, imageTailNames.visualizacion)
 		const imageVisualizacionUrl = `${visualizacionUrlBase}${imageVisualizacionName}`
@@ -81,6 +91,42 @@ export default function Galeria ({ bucketData, baseUrl, tipo, title }: Props) {
 		})
 	}
 
+
+	// Maneja la carga de imagenes dinamicamente con IntersectionObserver
+	const handleObserver = (entities, observer) => {
+		const target = entities[0]
+		if (target.isIntersecting) {
+			// Carga más imágenes cuando el elemento cargador es visible
+			setImagesLoaded((prev) => prev + imagesToLoadEachTime)
+
+			// Si no hay más imágenes para cargar, desasociamos el observer
+			if (imagesLoaded >= thumbnailFiles.length) {
+				observer.unobserve(target.target)
+			}
+		}
+	}
+
+
+	// Devuelve un array con los nombres de las imágenes a renderizar
+	const getImagesToRender = () => {
+		return thumbnailFiles.slice(0, imagesLoaded)
+	}
+
+
+	// Inicia el Observador del IntersectionObserver
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			handleObserver,
+			{ threshold: 1, rootMargin: loadImagesScrollDistance }
+		)
+		if (loader.current) {
+			observer.observe(loader.current)
+		}
+		return () => observer.disconnect() // limpiar el observer cuando el componente se desmonte
+	}, [imagesLoaded]) // Reejecuta useEffect cuando imagesLoaded cambie
+
+
+	// Comprobar si el navegador soporta la API Share para mostrar el botón de compartir
 	useEffect(() => {
 		setShowShare(!!window.navigator.share)
 	}, [])
@@ -91,7 +137,7 @@ export default function Galeria ({ bucketData, baseUrl, tipo, title }: Props) {
 			<div style={{ visibility: imageFullScreen ? 'hidden' : 'visible' }}>
 				<h1>{title}</h1>
 				<ul class={styles.galeryContainer}>
-					{thumbnailFiles.map((imageName, index) => (
+					{getImagesToRender().map((imageName, index) => (
 						<li key={index} class={styles.item}>
 							<img
 								src={`${thumbnailUrlBase}${imageName}`}
@@ -103,11 +149,15 @@ export default function Galeria ({ bucketData, baseUrl, tipo, title }: Props) {
 								<SvgDownload onClick={() => handleDownload(imageName)} />
 								{
 									showShare &&
-								<SvgShare onClick={() => hadleShare(imageName)} />
+                <SvgShare onClick={() => handleShare(imageName)} />
 								}
 							</div>
 						</li>
 					))}
+					<li ref={loader} class={styles.loader}>
+						{/* Elemento observado por IntersectionObserver para LazyLoading */}
+						{imagesLoaded < thumbnailFiles.length && 'Tonto el que lo lea 🤪'}
+					</li>
 				</ul>
 			</div>
 			{
