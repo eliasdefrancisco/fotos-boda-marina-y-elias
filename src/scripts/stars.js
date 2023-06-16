@@ -1,27 +1,70 @@
-const STAR_COUNT = 150
-const STAR_COLOR_1 = 'white'
-const STAR_COLOR_2 = 'yellow'
-const STAR_COLOR_3 = 'white'
-const STAR_COLOR_4 = 'orange'
+const canvas = document.getElementById('myCanvas')
+canvas.width = window.innerWidth
+canvas.height = window.innerHeight
+const ctx = canvas.getContext('2d')
 
-const starsContainer = document.querySelector('.stars')
+const colors = ['white', 'white', 'yellow', 'white'] // Define los colores aquí
+const totalStars = 20 // Define el número total de estrellas aquí
+const steps = 10 // Define el número de pasos para el fade in / fade out
+const minFadeDuration = 1500 // Define la duración mínima de fade in / fade out
+const maxFadeDuration = 3500 // Define la duración máxima de fade in / fade out
 
-// Genera las estrellas apoyandose en el css
-for (let i = 0; i < STAR_COUNT; i++) {
-	const star = document.createElement('div')
-	star.className = 'star'
-	star.style.left = `${Math.random() * 100}%`
-	star.style.top = `${Math.random() * 100}%`
-	const rand = Math.random()
-	if (rand < 0.25) {
-		star.style.backgroundColor = STAR_COLOR_1
-	} else if (rand < 0.5) {
-		star.style.backgroundColor = STAR_COLOR_2
-	} else if (rand < 0.75) {
-		star.style.backgroundColor = STAR_COLOR_3
-	} else {
-		star.style.backgroundColor = STAR_COLOR_4
+// Función para obtener un número aleatorio en un rango
+function getRandomInt (min, max) {
+	min = Math.ceil(min)
+	max = Math.floor(max)
+	return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+// Crear las estrellas
+for (let i = 0; i < totalStars; i++) {
+	let opacity = 0
+	let isFadingIn = true
+	let x = getRandomInt(0, canvas.width)
+	let y = getRandomInt(0, canvas.height)
+	const color = colors[getRandomInt(0, colors.length - 1)] // Elegir un color aleatorio
+	const totalFadeDuration = getRandomInt(minFadeDuration, maxFadeDuration)
+	const stepInterval = totalFadeDuration / steps
+	const radio = getRandomInt(0, 1) ? 2 : 1 // Elegir un radio aleatorio
+	const diametro = radio * 2 + 1
+
+	// Crear una función para hacer parpadear la estrella
+	const fade = function () {
+		ctx.clearRect(x - radio, y - radio, diametro, diametro)
+
+		if (isFadingIn) {
+			opacity += 0.1
+			if (opacity > 1) {
+				opacity = 1
+				isFadingIn = false
+			}
+		} else {
+			opacity -= 0.1
+			if (opacity < 0) {
+				opacity = 0
+				isFadingIn = true
+				x = getRandomInt(0, canvas.width)
+				y = getRandomInt(0, canvas.height)
+			}
+		}
+
+		ctx.globalAlpha = opacity
+		ctx.strokeStyle = color
+
+		// Dibujar la cruz
+		ctx.beginPath()
+		ctx.moveTo(x, y - radio)
+		ctx.lineTo(x, y + radio)
+		ctx.moveTo(x - radio, y)
+		ctx.lineTo(x + radio, y)
+		ctx.stroke()
+
+		ctx.globalAlpha = 1 // Reset alpha
+
+		// Recursivamente llamar a la función después de un tiempo aleatorio
+		setTimeout(fade, stepInterval)
 	}
-	star.classList.add(`blink-${Math.floor(Math.random() * 20) + 1}`)
-	starsContainer.appendChild(star)
+
+	// Iniciar el parpadeo
+	fade()
 }
