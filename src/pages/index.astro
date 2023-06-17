@@ -1,14 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import { imageTypes } from '../types/index'
+import bucketFilesJson from '../../bucketJsonGenerator/estructura_ficheros_bucket.json'
+
+const urlVideo = `${bucketFilesJson.urlBase}/${bucketFilesJson.boda.urlBaseRelativa}`
 ---
 
 <Layout title='Marina y Elías'>
 	<main>
 		<!-- <h1>Marina y Elías</h1> -->
 		<h1>Pingo y Pango</h1>
-		<!-- <h2>Después de la boda</h2> -->
-		<h2>After the party</h2>
 		<p>
 			bla bla bla bli blo blu blu
 		</p>
@@ -16,9 +17,65 @@ import { imageTypes } from '../types/index'
 		<h3><a href={'galerias/' + imageTypes.fotocall}>Gente disfrazada →</a></h3>
 		<h3><a href={'galerias/' + imageTypes.fotocall_printed}>Gente disfrazada de 3 en 3 →</a></h3>
 		<h3><a href={'galerias/' + imageTypes.fotocall_gifs}>Gifs de gente disfrazada →</a></h3>
+		<div class='hide-marina'>hide marina</div>
+		<div class='image-link-container'>
+			<h2>La gran historia</h2>
+			<video
+				src={`${urlVideo}video_felipe.mp4`}
+				poster={`${urlVideo}portada_video.jpg`}
+				controls
+			/>
+		</div>
+		<div class='image-link-container'>
+			<h2>Grandes momentos</h2>
+			<a href={'galerias/' + imageTypes.fotos}>
+				<img src='../../public/fotos_collage.png' alt='fotocall collage' />
+			</a>
+		</div>
+		<div class='image-link-container'>
+			<h2>Fotomatón time</h2>
+			<a href={'galerias/' + imageTypes.fotocall}>
+				<img src='../../public/fotocall_collage.png' alt='fotocall collage' />
+			</a>
+		</div>
+		<div class='image-link-container'>
+			<h2>Fotomatón en papel</h2>
+			<a href={'galerias/' + imageTypes.fotocall_printed}>
+				<img src='../../public/fotocall_printed_collage.png' alt='fotocall para imprimir collage' />
+			</a>
+		</div>
+		<div class='image-link-container'>
+			<h2>Fotomatón animado</h2>
+			<a href={'galerias/' + imageTypes.fotocall_gifs}>
+				<img src='../../public/fotocall_collage.png' alt='fotocall collage' />
+			</a>
+		</div>
+
 	</main>
 </Layout>
 
 <style>
-
+	main {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 100px;
+	}
+	video {
+		width: 100%;
+		max-width: var(--max-width);
+	}
+	img {
+		width: 100%;
+		max-width: var(--max-width);
+	}
+	a {
+		text-decoration: none;
+		color: var(--color-text);
+	}
+	.image-link-container {
+		margin-top: 50px;
+	}
+	.hide-marina {
+		margin-bottom: 1000px;
+	}
 </style>
