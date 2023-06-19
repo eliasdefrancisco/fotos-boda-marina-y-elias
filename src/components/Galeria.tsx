@@ -53,9 +53,15 @@ export default function Galeria ({ bucketData, baseUrl, tipo, title }: Props) {
 	// Download solo funcionará en HTTPS
 	// Cors policy ha sido activada para todos los orígenes en el bucket de Cloud Storage
 	function handleDownload (imageThumbName: string) {
-		const imageOriginalName = imageThumbName
-			.replace(imageTailNames.thumbnail, '')
-			.replace('.webp', '.jpg')
+		let imageOriginalName
+		if (tipo === imageTypes.fotocall_gifs) {
+			imageOriginalName = imageThumbName
+		}
+		else {
+			imageOriginalName = imageThumbName
+				.replace(imageTailNames.thumbnail, '')
+				.replace('.webp', '.jpg')
+		}
 		const imageOriginalUrl = `${originalUrlBase}${imageOriginalName}`
 
 		fetch(imageOriginalUrl)
@@ -66,7 +72,7 @@ export default function Galeria ({ bucketData, baseUrl, tipo, title }: Props) {
 				// Crear un enlace para la descarga
 				const enlace = document.createElement('a')
 				enlace.href = urlBlob
-				enlace.download = 'boda_marina_y_elias.jpg'
+				enlace.download = imageOriginalName
 				// Añadir el enlace al cuerpo del documento (necesario para Firefox)
 				document.body.appendChild(enlace)
 				// Simular un clic en el enlace
@@ -81,8 +87,14 @@ export default function Galeria ({ bucketData, baseUrl, tipo, title }: Props) {
 	// Share solo funcionará en HTTPS y con dispositivos que soporten la API Share
 	// (Android, Safari, ..., pero no Chrome en escritorio)
 	function handleShare (imageThumbName: string) {
-		const imageVisualizacionName = imageThumbName
-			.replace(imageTailNames.thumbnail, imageTailNames.visualizacion)
+		let imageVisualizacionName
+		if (tipo === imageTypes.fotocall_gifs) {
+			imageVisualizacionName = imageThumbName
+		}
+		else {
+			imageVisualizacionName = imageThumbName
+				.replace(imageTailNames.thumbnail, imageTailNames.visualizacion)
+		}
 		const imageVisualizacionUrl = `${visualizacionUrlBase}${imageVisualizacionName}`
 		navigator.share({
 			title: 'Boda Marina y Elías',
