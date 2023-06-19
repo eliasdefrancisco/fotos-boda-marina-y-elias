@@ -8,18 +8,16 @@ const urlVideo = `${bucketFilesJson.urlBase}/${bucketFilesJson.boda.urlBaseRelat
 
 <Layout title='Marina y Elías'>
 	<main>
-		<!-- <h1>Marina y Elías</h1> -->
-		<h1>Pingo y Pango</h1>
+		<h1>Marina y Elías</h1>
 		<p>
-			bla bla bla bli blo blu blu
+			Bienvenidos a la galería de fotos de la boda de Marina y Elías
 		</p>
-		<h3><a href={'galerias/' + imageTypes.fotos}>Los momentos →</a></h3>
-		<h3><a href={'galerias/' + imageTypes.fotocall}>Gente disfrazada →</a></h3>
-		<h3><a href={'galerias/' + imageTypes.fotocall_printed}>Gente disfrazada de 3 en 3 →</a></h3>
-		<h3><a href={'galerias/' + imageTypes.fotocall_gifs}>Gifs de gente disfrazada →</a></h3>
-		<div class='hide-marina'>hide marina</div>
+		<p>
+			Esta galería pretende servir para rememorar los buenos momentos que pasamos en la boda y esta dedicada a tí que estuviste en mi boda y como no, a mi querida esposa Marina, no paso ni un día sin dar las gracias de haberme cruzado en tu camino, te quiero amor, espero que te guste mi regalo de primer aniversario 24 de Junio del 2023
+		</p>
 		<div class='image-link-container'>
 			<h2>La gran historia</h2>
+			<p>Espectaculo de Arte con Arena regalo del mejor cuñado y amigo que se pueda tener Felipe Mejias Rosado</p>
 			<video
 				src={`${urlVideo}video_felipe.mp4`}
 				poster={`${urlVideo}portada_video.jpg`}
@@ -28,24 +26,28 @@ const urlVideo = `${bucketFilesJson.urlBase}/${bucketFilesJson.boda.urlBaseRelat
 		</div>
 		<div class='image-link-container'>
 			<h2>Grandes momentos</h2>
+			<p>Fotos random de grandes momentos</p>
 			<a href={'galerias/' + imageTypes.fotos}>
 				<img src='../../public/fotos_collage.png' alt='fotocall collage' />
 			</a>
 		</div>
 		<div class='image-link-container'>
 			<h2>Fotomatón time</h2>
+			<p>Difrazado siempre sales mejor 😂</p>
 			<a href={'galerias/' + imageTypes.fotocall}>
 				<img src='../../public/fotocall_collage.png' alt='fotocall collage' />
 			</a>
 		</div>
 		<div class='image-link-container'>
 			<h2>Fotomatón en papel</h2>
+			<p>Quiza quieras enmarcarla y ponerla encima del cabecero de tu cama</p>
 			<a href={'galerias/' + imageTypes.fotocall_printed}>
 				<img src='../../public/fotocall_printed_collage.png' alt='fotocall para imprimir collage' />
 			</a>
 		</div>
 		<div class='image-link-container'>
 			<h2>Fotomatón animado</h2>
+			<p>Nunca te vi hacer tanto deporte</p>
 			<a href={'galerias/' + imageTypes.fotocall_gifs}>
 				<img src='../../public/fotocall_collage.png' alt='fotocall collage' />
 			</a>
@@ -63,10 +65,12 @@ const urlVideo = `${bucketFilesJson.urlBase}/${bucketFilesJson.boda.urlBaseRelat
 	video {
 		width: 100%;
 		max-width: var(--max-width);
+		margin-top: 10px;
 	}
 	img {
 		width: 100%;
 		max-width: var(--max-width);
+		margin-top: 10px;
 	}
 	a {
 		text-decoration: none;
